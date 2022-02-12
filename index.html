@@ -4,9 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Lesson 1</title>
 </head>
 <body>
-    
+    <div class="container">
+        <div class="wrapper">
+            <div class="example">
+                <input type="text" class="example-input" v-model="name">
+                <hr>
+                <p class="text">Hello, {{name}}</p>
+                <hr>
+                <button v-on:click="isShow = !isShow">Toggle</button>
+                <p class="lorem" v-if="isShow">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae consectetur doloribus nobis delectus molestias ducimus unde suscipit quasi voluptate labore reprehenderit, atque excepturi? Eum dignissimos culpa nulla esse! Ut, numquam.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="./vue.js"></script>
+
+    <script>
+        Vue.createApp({
+            data: () => ({
+                name: '',
+                isShow: true
+            })
+        }).mount('.example')
+    </script>
 </body>
 </html>
