@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="form__container">
-        <div class="form__wrapper">
+        <div class="form__wrapper" v-if="isShow">
             <form>
                 <ul class="form__list">
                     <li class="form__item">
@@ -65,13 +65,11 @@
                                 minlength="2"
                                 maxlength="60">
                     </li>
-                    <li class="form__item">
-                        <button class="form__btn-send">Send Data</button>
-                    </li>
                 </ul>
+                <button class="form__btn-send" v-bind:class="{ disabled: isDisabled }" v-bind:disabled="isDisabled" v-on:click="sendData">Send Data</button>
             </form>
         </div>
-        <div class="info__wrapper">
+        <div class="info__wrapper" v-if="!isShow">
             <h2 class="info__title">Infrormation</h2>
             <ul class="info__list">
                 <li class="info__item">
@@ -103,8 +101,25 @@
                 name: '',
                 surname: '',
                 email: '',
-                phone: ''
-            })
+                phone: '',
+                isShow: true,
+            }),
+
+            computed: {
+                isDisabled() {
+                    if (this.name.length > 1 && this.surname.length > 1 && this.email.length > 4 && this.phone.length > 9) {
+                        return false
+                    } else {
+                        return true
+                    }
+                }
+            },
+
+            methods: {
+                sendData() {
+                    return this.isShow = false;
+                }
+            }
         }).mount('.form__container')
     </script>
 </body>
