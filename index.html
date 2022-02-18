@@ -13,61 +13,61 @@
 <body>
     <div class="form__container">
         <div class="form__wrapper" v-if="isShow">
-            <form>
-                <ul class="form__list">
-                    <li class="form__item">
-                        <input type="text"
-                                class="form__input"
-                                placeholder="First Name"
-                                required
-                                minlength="2"
-                                maxlength="25"
-                                v-model="name">
-                    </li>
-                    <li class="form__item">
-                        <input type="text" 
-                                class="form__input" 
-                                placeholder="Last Name" 
-                                required 
-                                minlength="2" 
-                                maxlength="25"
-                                v-model="surname">
-                    </li>
-                    <li class="form__item">
-                        <input type="email" 
-                                class="form__input" 
-                                placeholder="Email" 
-                                minlength="5" 
-                                maxlength="60" 
-                                pattern="^([^ ]+@[^ ]+\.[a-z]{2,6}|)$"
-                                required
-                                v-model="email">
-                    </li>
-                    <li class="form__item">
-                        <input type="tel" 
-                                class="form__input" 
-                                placeholder="Phone Number"
-                                minlength="10"
-                                maxlength="10"
-                                pattern="[0-9]{10}"
-                                required
-                                v-model="phone">
-                    </li>
-                    <li class="form__item form__guests">
-                        <span class="form__btn-plus-label">Guests</span>
-                        <button class="form__btn-plus"></button>
-                    </li>
-                    <li class="form__item">
-                        <input type="text"
-                                class="form__input"
-                                placeholder="Guest Name"
-                                required
-                                minlength="2"
-                                maxlength="60">
-                    </li>
-                </ul>
-                <button class="form__btn-send" v-bind:class="{ disabled: isDisabled }" v-bind:disabled="isDisabled" v-on:click="sendData">Send Data</button>
-            </form>
+            <ul class="form__list">
+                <li class="form__item">
+                    <input type="text"
+                            class="form__input"
+                            placeholder="First Name"
+                            required
+                            minlength="2"
+                            maxlength="25"
+                            v-model="name">
+                </li>
+                <li class="form__item">
+                    <input type="text" 
+                            class="form__input" 
+                            placeholder="Last Name" 
+                            required 
+                            minlength="2" 
+                            maxlength="25"
+                            v-model="surname">
+                </li>
+                <li class="form__item">
+                    <input type="email" 
+                            class="form__input" 
+                            placeholder="Email" 
+                            minlength="5" 
+                            maxlength="60" 
+                            pattern="^([^ ]+@[^ ]+\.[a-z]{2,6}|)$"
+                            required
+                            v-model="email">
+                </li>
+                <li class="form__item">
+                    <input type="tel" 
+                            class="form__input" 
+                            placeholder="Phone Number"
+                            minlength="10"
+                            maxlength="10"
+                            pattern="[0-9]{10}"
+                            required
+                            v-model="phone">
+                </li>
+                <li class="form__item form__guests">
+                    <span class="form__btn-plus-label">Guests</span>
+                    <button class="form__btn-plus" v-on:click="addNewGuest"></button>
+                </li>
+                <li class="form__item form__guest-field" v-for="(item, i) in items" v-bind:key="i">
+                    <input type="text"
+                            class="form__input form__guest-input"
+                            placeholder="Guest Name"
+                            required
+                            minlength="2"
+                            maxlength="60"
+                            v-model='items[i]'>
+                    <button class="form__btn-minus" v-on:click="deleteGuest(i)"></button>
+                </li>
+            </ul>
+            <button class="form__btn-send" v-bind:class="{ disabled: isDisabled }" v-bind:disabled="isDisabled" v-on:click="sendData">Send Data</button>
         </div>
         <div class="info__wrapper" v-if="!isShow">
             <h2 class="info__title">Infrormation</h2>
@@ -86,7 +86,7 @@
                 </li>
                 <li class="info__item info__guests">
                     <span class="info__label">Guests</span>
-                    <span class="info__guest"></span>
+                    <span class="info__guest" v-for="(item, i) in items" v-bind:filteredGuests = "filteredGuests" v-bind:key="i">{{ item + ',&nbsp' }}</span>
                 </li>
             </ul>
         </div>
@@ -103,21 +103,31 @@
                 email: '',
                 phone: '',
                 isShow: true,
+                items: ['']
             }),
 
             computed: {
                 isDisabled() {
-                    if (this.name.length > 1 && this.surname.length > 1 && this.email.length > 4 && this.phone.length > 9) {
-                        return false
+                    if (this.name.length > 1 && this.surname.length > 1 && this.email.length > 1 && this.phone.length > 1) {
+                        return false;
                     } else {
-                        return true
-                    }
-                }
+                        return true;
+                    };
+                },
+                filteredGuests() {
+                    this.items = this.items.filter((item) => item !== '');
+                }                
             },
 
             methods: {
                 sendData() {
                     return this.isShow = false;
+                },
+                addNewGuest() {
+                    this.items.push('');
+                },
+                deleteGuest(index) {
+                    this.items.splice(index, 1);
                 }
             }
         }).mount('.form__container')

@@ -22,14 +22,13 @@ body {
 
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 .form__wrapper,
 .info__wrapper {
-    max-width: 600px;
+    max-width: 500px;
     width: 100%;
-    padding: 50px;
+    padding-top: 100px;
 }
 
 .form__list,
@@ -39,10 +38,6 @@ body {
 
 .form__item:not(:last-child) {
     margin-bottom: 20px;
-}
-
-.form__item:last-child {
-    margin-top: 40px;
 }
 
 .form__input {
@@ -100,6 +95,38 @@ body {
 
 .form__btn-plus::after {
     transform: rotate(90deg) translate(-1px, 8px);
+}
+
+.form__guest-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form__guest-input {
+    max-width: 90%;
+}
+
+.form__btn-minus {
+    width: 32px;
+    height: 32px;
+    background-color: #bf263b;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+}
+
+.form__btn-minus::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 2px;
+    background-color: #fff;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-8px, -1px);
 }
 
 .form__btn-send {
@@ -182,14 +209,11 @@ body {
     right: 0;
 }
 
-.info__text {
+.info__text,
+.info__guest {
     color: #fff;
 }
 
 .info__guests {
     display: flex;
-}
-
-.info__guest {
-    width: 100%;
 }
