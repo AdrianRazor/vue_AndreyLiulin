@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Vue Tabs</title>
+</head>
+<body>
+  <main class="main">
+    <div class="header">
+      <ul class="list">
+        <li class="filter" @click="filterCards">All</li>
+        <li class="filter" v-for="(tag, index) in tags" :key="index" @click="filterCards">{{ tag }}</li>
+      </ul>
+    </div>
+
+    <div class="music">
+      <div class="card" v-for="(card, index) in filteredCards" :key="index">
+        <div class="image">
+          <img :src="card.photo" alt="">
+        </div>
+        <h2 class="name">{{ card.artist }}</h2>
+        <h3 class="song">{{ card.title }}</h3>
+        <ul class="category">
+          <li class="tag" v-for="value in card.category" :key="value">{{ value }}</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+
+  <script src="./vue.js"></script>
+
+  <script>
+    Vue.createApp({
+      data: () => ({
+        cards: [ 
+          {
+            id: 0,
+            title: "Judas",
+            photo: "https://m.media-amazon.com/images/I/71nOMeh0JdL._CR0,0,1414,1414_UX256.jpg",
+            artist: "Lady Gaga",
+            category: ["Trending"],
+          },
+          { id: 1,
+            title: "Paparazzi",
+            photo: "https://c-fa.cdn.smule.com/rs-s39/arr/95/2d/4feab9d0-19c3-45f2-b483-4a616322cdad.jpg",
+            artist: "Lady Gaga",
+            category: ["Featured", "Genres"],
+          },
+          {
+            id: 2,
+            title: "Just Dance",
+            photo: "https://c-fa.cdn.smule.com/rs-s27/arr/85/a9/ffea8979-9d96-4134-aebc-a0560240097b.jpg",
+            artist: "Lady Gaga",
+            category: ["Featured", "Trending"],
+          },
+          {
+            id: 3,
+            title: "Meet Me Halfway",
+            photo: "https://m.media-amazon.com/images/I/41ZcLqqISIL._CR0,0,500,500_UX256.jpg",
+            artist: "The Black Eye Peace",
+            category: ["Workout"],
+          },
+          {
+            id: 4,
+            title: "Can't Hold Us",
+            photo: "https://na.cdn.beatsaver.com/953ee3b23e6c8a544e4a4660b9be3e808deeffdc.jpg",
+            artist: "Macklemore & Ryan Lewis",
+            category: ["Most Played", "Trending"],
+          },
+          {
+            id: 5,
+            title: "Dark Horse",
+            photo: "https://c-fa.cdn.smule.com/rs-s27/arr/d7/b8/a2709797-f95f-45f6-a408-48760f0e7fc2.jpg",
+            artist: "Katy Perry",
+            category: ["Most Played", "New Releases"],
+          }, 
+        ],
+        filteredCards: [],
+        tags: ["Trending", "Genres", "Featured", "Workout", "Most Played", "New Releases"],
+      }),
+
+      methods: {
+        filterCards(event) {
+          if(event.target.outerText === "All") {
+            this.filteredCards = this.cards;
+          } else {
+            this.filteredCards = this.cards.filter((card) => {
+              return card.category.some(value => value === event.target.outerText);
+            });
+          }
+        },
+      },
+
+      mounted() {
+        this.filteredCards = this.cards;
+      },
+    }).mount('.main')
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.main {
+  max-width: 1400px;
+  padding: 100px 60px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 50px;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter {
+  cursor: pointer;
+  background-color: #fff;
+  border-radius: 50px;
+  box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.2);
+  padding: 10px 20px;
+  transition: all 0.2s ease;
+}
+
+.filter:hover {
+  background-color: #d30320;
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.filter:not(:last-child) {
+  margin-right: 20px;
+}
+
+.music {
+  display: grid;
+  grid-template-columns: repeat(3, 250px);
+  gap: 50px 50px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border-radius: 15px;
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.name {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 120%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.song {
+  font-size: 22px;
+  line-height: 120%;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #d30320;
+}
+
+.category {
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background-color: #eee;
+  border-radius: 50px;
+  padding: 5px 15px;
+
+  font-size: 12px;
+  white-space: nowrap;
+}

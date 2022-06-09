@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hooks</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/vue.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="example">
+        <button class="btn btn-primary" ref="button">Показать?</button>
+        <hr />
+        <label for="">
+          Field
+          <input type="text" class="form-group" v-model="field" ref="textField"/>
+        </label>
+        <hr />
+        {{field}}
+      </div>
+    </div>
+    <script>
+      /*
+				
+		*/
+      Vue.createApp({
+        data: () => ({
+          counter: 0,
+          field: "",
+        }),
+
+        methods: {
+          showMessage() {
+            alert('А я сейчас вам покажу, откуда на Беларусь готовилось нападение...');
+          }
+        },
+
+        created() {
+          // 5) Запрос на сервер
+          fetch("https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/all-agents/Tiger_King/daily/20210901/20210930", {
+						method: 'GET',
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              console.log(data);
+            });
+        },
+
+        mounted() {
+          // 1) Получить элемент кнопки и записать его в переменную
+          console.log(this.$refs.button);
+
+          // 2) Навесить обработчик события на кнопку
+          this.$refs.button.addEventListener('click', this.showMessage);
+
+          // 4) Сфокусироваться на input (при загрузке страницы, то есть открыли файл, а у нас курсор уже в input)
+          this.$refs.textField.focus();
+        },
+        
+        updated() {
+          // 6) Изменять переменную counter поосле изменения и перерисовки DOM
+          this.counter = this.counter + 1;
+          console.log(this.counter);
+        },
+
+        beforeUnmount() {
+          // 3) Удалить обработчик события с кнопки
+          this.$refs.button.removeEventListener('click', this.showMessage);
+        },        
+      }).mount(".example");
+    </script>
+  </body>
+</html>

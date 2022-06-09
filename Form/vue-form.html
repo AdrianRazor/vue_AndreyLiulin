@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Vue Form</title>
+  </head>
+  <body>
+    <div class="form__container">
+      <div class="form__wrapper" v-if="isShow">
+        <ul class="form__list">
+          <li class="form__item">
+            <input
+              type="text"
+              class="form__input"
+              placeholder="First Name"
+              required
+              minlength="2"
+              maxlength="25"
+              v-model="name"
+            />
+          </li>
+          <li class="form__item">
+            <input
+              type="text"
+              class="form__input"
+              placeholder="Last Name"
+              required
+              minlength="2"
+              maxlength="25"
+              v-model="surname"
+            />
+          </li>
+          <li class="form__item">
+            <input
+              type="email"
+              class="form__input"
+              placeholder="Email"
+              minlength="5"
+              maxlength="60"
+              pattern="^([^ ]+@[^ ]+\.[a-z]{2,6}|)$"
+              required
+              v-model="email"
+            />
+          </li>
+          <li class="form__item">
+            <input
+              type="tel"
+              class="form__input"
+              placeholder="Phone Number"
+              minlength="10"
+              maxlength="10"
+              pattern="[0-9]{10}"
+              required
+              v-model="phone"
+            />
+          </li>
+          <li class="form__item form__guests">
+            <span class="form__btn-plus-label">Guests</span>
+            <button class="form__btn-plus" @click="addNewGuest"></button>
+          </li>
+          <li
+            class="form__item form__guest-field"
+            v-for="(item, i) in items"
+            :key="i"
+          >
+            <input
+              type="text"
+              class="form__input form__guest-input"
+              placeholder="Guest Name"
+              required
+              minlength="2"
+              maxlength="60"
+              v-model="items[i]"
+              :ref="`inputField${i}`"
+            />
+            <button class="form__btn-minus" @click="deleteGuest(i)"></button>
+          </li>
+        </ul>
+        <button
+          class="form__btn-send"
+          :class="{ disabled: isDisabled }"
+          :disabled="isDisabled"
+          @click="sendData"
+        >
+          Send Data
+        </button>
+      </div>
+      <div class="info__wrapper" v-if="!isShow">
+        <h2 class="info__title">Infrormation</h2>
+        <ul class="info__list">
+          <li class="info__item">
+            <span class="info__label">Full Name</span>
+            <span class="info__text">{{ name }} {{ surname }}</span>
+          </li>
+          <li class="info__item">
+            <span class="info__label">Email</span>
+            <span class="info__text">{{ email }}</span>
+          </li>
+          <li class="info__item">
+            <span class="info__label">Phone</span>
+            <span class="info__text">{{ phone }}</span>
+          </li>
+          <li class="info__item info__guests">
+            <span class="info__label">Guests</span>
+            <span
+              class="info__guest"
+              v-for="(item, i) in items"
+              v-bind:filteredGuests="filteredGuests"
+              v-bind:key="i"
+              >{{ item + ',&nbsp' }}</span
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="./vue.js"></script>
+
+    <script>
+      Vue.createApp({
+        data() {
+          return {
+            name: "",
+            surname: "",
+            email: "",
+            phone: "",
+            isShow: true,
+            items: [""],
+          };
+        },
+
+        computed: {
+          isDisabled() {
+            if (
+              this.name.length > 1 &&
+              this.surname.length > 1 &&
+              this.email.length > 1 &&
+              this.phone.length > 1
+            ) {
+              return false;
+            } else {
+              return true;
+            }
+          },
+          filteredGuests() {
+            this.items = this.items.filter((item) => item !== "");
+          },
+        },
+
+        watch: {
+          itemsLength(val, oldVal) {
+            this.focusOnNewInput();
+          },
+        },
+
+        methods: {
+          sendData() {
+            return (this.isShow = false);
+          },
+          addNewGuest() {
+            this.items.push("");
+            // this.focusOnNewInput();
+          },
+          focusOnNewInput() {
+            // this.$refs.inputField.focus();
+            console.log(this.$refs["inputField1"]);
+          },
+          deleteGuest(index) {
+            this.items.splice(index, 1);
+          },
+        },
+      }).mount(".form__container");
+    </script>
+  </body>
+</html>
