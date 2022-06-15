@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue WTF</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/vue.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="magic">
+        <h1>Vue magic</h1>
+        <hr />
+        <div class="gifs">
+          <transition
+            enter-active-class="animate__animated animate__lightSpeedInLeft"
+          >
+            <div class="gif-item" v-if="gifIsShown">
+              <h2 class="title">Me</h2>
+              <img class="gif" src="./assets/reaction_2.gif" alt="reaction" />
+            </div>
+          </transition>
+          <transition
+            enter-active-class="animate__animated animate__lightSpeedInRight"
+          >
+            <div class="gif-item" v-if="gifIsShown">
+              <h2 class="title">Vue.js</h2>
+              <img class="gif" src="./assets/spiderman.gif" alt="wtf" />
+            </div>
+          </transition>
+        </div>
+        <hr />
+        <ul>
+          <li class="list-group-item" v-for="item in items">
+            <span class="random">{{ item.from }} : {{ item.to }}</span>
+            <!-- <app-random :min="item.from" :max="item.to"></app-random> -->
+          </li>
+        </ul>
+        <hr />
+        <button class="btn btn-danger" @click="onShuffle">Shuffle</button>
+      </div>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data: () => ({
+          items: [
+            { from: 0, to: 3 },
+            { from: 4, to: 12 },
+            { from: -2, to: -1 },
+          ],
+          gifIsShown: false,
+        }),
+        methods: {
+          onShuffle() {
+            this.items = this.items.sort(() => (Math.random() > 0.5 ? 1 : -1));
+
+            console.log("---------");
+
+            this.items.forEach((item) => {
+              console.log(item.from + ":" + item.to);
+            });
+
+            if (!this.gifIsShown) {
+              this.gifIsShown = true;
+            }
+          },
+        },
+      });
+
+      // Я думаю это связано с компонентным подходом потому,
+      // что если всё делать в родительском компоненте,
+      // то всё перемешивается
+      // Возможно дочерний компонент ссылается на первоначальные данные
+      // и вызванный метод сортировки не меняет изначальный массив,
+      // а возвращает новый и рендерит на основе нового массива
+      // с изменёнными данными
+
+
+      // app.component("app-random", {
+      //   props: {
+      //     min: Number,
+      //     max: Number,
+      //   },
+      //   data() {
+      //     return {
+      //       num: this.min + " : " + this.max,
+      //     };
+      //   },
+      //   template: ` <span class="random">{{ num }}</span>`,
+      // });
+
+      app.mount(".magic");
+    </script>
+  </body>
+</html>

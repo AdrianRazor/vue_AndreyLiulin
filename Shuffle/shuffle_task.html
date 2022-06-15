@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue WTF</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/vue.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="magic">
+        <h1>Vue magic</h1>
+        <hr />
+        <div class="gifs">
+          <transition
+            enter-active-class="animate__animated animate__lightSpeedInLeft"
+          >
+            <div class="gif-item" v-if="gifIsShown">
+              <h2 class="title">Me</h2>
+              <img class="gif" src="./assets/reaction.gif" alt="reaction" />
+            </div>
+          </transition>
+          <transition
+            enter-active-class="animate__animated animate__lightSpeedInRight"
+          >
+            <div class="gif-item" v-if="gifIsShown">
+              <h2 class="title">Vue.js</h2>
+              <img class="gif" src="./assets/wtf-boy.gif" alt="wtf" />
+            </div>
+          </transition>
+        </div>
+        <hr />
+        <ul>
+          <!-- <li class="list-group-item" v-for="item, index in items">
+            <span>{{ item.name }}</span>
+            <input type="text" class="form-control" v-model="item.value" />
+          </li> -->
+          <app-item
+            v-for="item, index in items"
+            :name="item.name"
+            :value="$emit(item.value)"
+          ></app-item>
+        </ul>
+        <hr />
+        <button class="btn btn-danger" @click="onShuffle">Shuffle</button>
+      </div>
+    </div>
+    <script>
+      const app = Vue.createApp({
+        data: () => ({
+          // items: ["First", "Second", "Third"],
+          items: [
+            {
+              name: "First",
+              value: "",
+            },
+            {
+              name: "Second",
+              value: "",
+            },
+            {
+              name: "Third",
+              value: "",
+            },
+          ],
+          gifIsShown: false,
+        }),
+        // В исходных данных перемешивались только значения спанов
+        // и не было подвязки к инпутам, поэтому они не затрагивались
+        // Сейчас в массиве объекты с привязкой к спанам и инпутам
+        methods: {
+          onShuffle() {
+            console.log(this.items);
+            this.items = this.items.sort(() => (Math.random() > 0.5 ? 1 : -1));
+
+            if (!this.gifIsShown) {
+              this.gifIsShown = true;
+            }
+            console.log(this.items);
+          },
+        },
+      });
+
+      app.component("app-item", {
+        props: {
+          name: String,
+          value: String,
+        },
+
+        template: `
+          <li class="list-group-item">
+            <span>{{ name }}</span>
+            <input type="text" class="form-control" v-model="value" />
+          </li>
+        `,
+      });
+
+      app.mount(".magic");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Progress Bar</title>
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/vue.js"></script>
+  </head>
+  <body>
+    <div class="form">
+      <form class="form__wrapper">
+        <div class="progress">
+          <div class="progress__bar" :style="calculateWidth"></div>
+        </div>
+        <div class="form__item" v-for="(item, index) in info" :key="index">
+          <input
+            type="text"
+            class="form__input"
+            :placeholder="item.name"
+            :pattern="item.pattern"
+            @input="checkInputLength(item), checkInputValid(item), changeBarWidth()"
+            v-model="item.value"
+            required
+          />
+          <div
+            class="form__icon"
+            :class="{ valid: item.isValid }"
+            v-if="checkInputLength(item)"
+          ></div>
+        </div>
+        <button
+          class="form__btn-send"
+          :class="{ disabled: checkAllValidInputs }"
+        >
+          Send Data
+        </button>
+      </form>
+    </div>
+
+    <script>
+      Vue.createApp({
+        data: () => ({
+          info: [
+            {
+              name: "Name",
+              value: "",
+              pattern: "^[a-zA-Z]{2,30}$",
+              isValid: false,
+            },
+            {
+              name: "Phone",
+              value: "",
+              pattern: "^[0-9]{7,14}$",
+              isValid: false,
+            },
+            {
+              name: "Email",
+              value: "",
+              pattern: ".+",
+              isValid: false,
+            },
+            {
+              name: "Some Field 1",
+              value: "",
+              pattern: ".+",
+              isValid: false,
+            },
+            {
+              name: "Some Field 2",
+              value: "",
+              pattern: ".+",
+              isValid: false,
+            },
+          ],
+          barWidth: 0,
+        }),
+
+        computed: {
+          checkInfoLength() {
+            return this.info.length;
+          },
+          calculateWidth() {
+            return {
+              width: this.barWidth + "%",
+            };
+          },
+          countValidInputs() {
+            return this.info.filter((el) => el.isValid === true).length;
+          },
+          checkAllValidInputs() {
+            return this.countValidInputs !== this.checkInfoLength;
+          },
+        },
+
+        methods: {
+          checkInputLength(item) {
+            return item.value.length > 0;
+          },
+          checkInputValid(item) {
+            return event.target.checkValidity()
+              ? (item.isValid = true)
+              : (item.isValid = false);
+          },
+          changeBarWidth() {
+            this.barWidth = (this.countValidInputs / this.info.length) * 100;
+          },
+        },
+      }).mount(".form");
+    </script>
+  </body>
+</html>
