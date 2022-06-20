@@ -80,7 +80,7 @@
               minlength="2"
               maxlength="60"
               v-model="items[i]"
-              :ref="`inputField${i}`"
+              :ref="inputField"
             />
             <button class="form__btn-minus" @click="deleteGuest(i)"></button>
           </li>
@@ -156,23 +156,15 @@
           },
         },
 
-        watch: {
-          itemsLength(val, oldVal) {
-            this.focusOnNewInput();
-          },
-        },
-
         methods: {
           sendData() {
             return (this.isShow = false);
           },
           addNewGuest() {
             this.items.push("");
-            // this.focusOnNewInput();
-          },
-          focusOnNewInput() {
-            // this.$refs.inputField.focus();
-            console.log(this.$refs["inputField1"]);
+            this.$nextTick(() => {
+              this.$refs.inputField.focus();
+            });
           },
           deleteGuest(index) {
             this.items.splice(index, 1);

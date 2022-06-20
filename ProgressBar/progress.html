@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Progress Bar</title>
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/vue.js"></script>
+  </head>
+  <body>
+    <div class="form">
+      <form class="form__wrapper">
+        <div class="progress">
+          <div class="progress__bar" :style="calculateWidth"></div>
+        </div>
+        <div class="form__item" v-for="(field, i) in info" :key="i">
+          <input
+            type="text"
+            class="form__input"
+            @input="handleInput($event.target.value, i)"
+            required
+          />
+          <div
+            class="form__icon"
+            v-if="field.activated"
+            :class="{ valid: field.valid }"
+          ></div>
+        </div>
+        <button class="form__btn-send" :disabled="!formReady">Send Data</button>
+      </form>
+    </div>
+
+    <script>
+      Vue.createApp({
+        created() {
+          return this.info.forEach((element) => {
+            element.valid = false;
+            element.activated = false;
+          });
+        },
+
+        data: () => ({
+          info: [
+            {
+              name: "Name",
+              value: "",
+              pattern: /^[a-zA-Z ]{2,30}$/,
+            },
+            {
+              name: "Phone",
+              value: "",
+              pattern: /^[0-9]{7,14}$/,
+            },
+            {
+              name: "Email",
+              value: "",
+              pattern: /.+/,
+            },
+            {
+              name: "Additional info 1",
+              value: "",
+              pattern: /.+/,
+            },
+            {
+              name: "Additional info 2",
+              value: "",
+              pattern: /.+/,
+            },
+          ],
+        }),
+
+        computed: {
+          validInputs() {
+            return this.info.reduce((total, item) => {
+              return total + (item.valid ? 1 : 0);
+            }, 0);
+          },
+          formReady() {
+            return this.validInputs === this.info.length;
+          },
+          calculateWidth() {
+            return {
+              width: (this.validInputs / this.info.length) * 100 + "%",
+            };
+          },
+        },
+
+        methods: {
+          handleInput(value, i) {
+            const field = this.info[i];
+            console.log(field);
+            field.value = value;
+            field.activated = true;
+            field.valid = field.pattern.test(value);
+          },
+        },
+      }).mount(".form");
+    </script>
+  </body>
+</html>
