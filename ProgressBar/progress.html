@@ -14,97 +14,85 @@
         <div class="progress">
           <div class="progress__bar" :style="calculateWidth"></div>
         </div>
-        <div class="form__item" v-for="(item, index) in info" :key="index">
+        <div class="form__item" v-for="(field, i) in info" :key="i">
           <input
             type="text"
             class="form__input"
-            :placeholder="item.name"
-            :pattern="item.pattern"
-            @input="checkInputLength(item), checkInputValid(item), changeBarWidth()"
-            v-model="item.value"
+            @input="handleInput($event.target.value, i)"
             required
           />
           <div
             class="form__icon"
-            :class="{ valid: item.isValid }"
-            v-if="checkInputLength(item)"
+            v-if="field.activated"
+            :class="{ valid: field.valid }"
           ></div>
         </div>
-        <button
-          class="form__btn-send"
-          :class="{ disabled: checkAllValidInputs }"
-        >
-          Send Data
-        </button>
+        <button class="form__btn-send" :disabled="!formReady">Send Data</button>
       </form>
     </div>
 
     <script>
       Vue.createApp({
+        created() {
+          return this.info.forEach((element) => {
+            element.valid = false;
+            element.activated = false;
+          });
+        },
+
         data: () => ({
           info: [
             {
               name: "Name",
               value: "",
-              pattern: "^[a-zA-Z]{2,30}$",
-              isValid: false,
+              pattern: /^[a-zA-Z ]{2,30}$/,
             },
             {
               name: "Phone",
               value: "",
-              pattern: "^[0-9]{7,14}$",
-              isValid: false,
+              pattern: /^[0-9]{7,14}$/,
             },
             {
               name: "Email",
               value: "",
-              pattern: ".+",
-              isValid: false,
+              pattern: /.+/,
             },
             {
-              name: "Some Field 1",
+              name: "Additional info 1",
               value: "",
-              pattern: ".+",
-              isValid: false,
+              pattern: /.+/,
             },
             {
-              name: "Some Field 2",
+              name: "Additional info 2",
               value: "",
-              pattern: ".+",
-              isValid: false,
+              pattern: /.+/,
             },
           ],
-          barWidth: 0,
         }),
 
         computed: {
-          checkInfoLength() {
-            return this.info.length;
+          validInputs() {
+            return this.info.reduce((total, item) => {
+              return total + (item.valid ? 1 : 0);
+            }, 0);
+          },
+          formReady() {
+            return this.validInputs === this.info.length;
           },
           calculateWidth() {
             return {
-              width: this.barWidth + "%",
+              width: (this.validInputs / this.info.length) * 100 + "%",
             };
-          },
-          countValidInputs() {
-            return this.info.filter((el) => el.isValid === true).length;
-          },
-          checkAllValidInputs() {
-            return this.countValidInputs !== this.checkInfoLength;
           },
         },
 
         methods: {
-          checkInputLength(item) {
-            return item.value.length > 0;
-          },
-          checkInputValid(item) {
-            return event.target.checkValidity()
-              ? (item.isValid = true)
-              : (item.isValid = false);
-          },
-          changeBarWidth() {
-            this.barWidth = (this.countValidInputs / this.info.length) * 100;
+          handleInput(value, i) {
+            const field = this.info[i];
+            console.log(field);
+            field.value = value;
+            field.activated = true;
+            field.valid = field.pattern.test(value);
           },
         },
       }).mount(".form");
