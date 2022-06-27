@@ -1,39 +1,55 @@
 <template>
-  <div class="modal" :class="{ active: isOpen }">
-    <div class="modal__content">
-      <slot name="header"></slot>
-      <slot></slot>
-      <slot name="footer"></slot>
+  <div
+    class="modal"
+    tabindex="-1"
+    @click.self="$emit('close-modal')"
+    @keydown.esc="$emit('close-modal')"
+  >
+    <div class="modal__window">
+      <div class="modal__content">
+        <slot name="header"></slot>
+        <slot></slot>
+        <slot name="footer"></slot>
+      </div>
+      <slot name="aside"></slot>
+      <button id="close" @click="$emit('close-modal')">
+        <svg viewBox="0 0 20 20">
+          <path
+            d="M10.0006 8.82178L14.1256 4.69678L15.3039 5.87511L11.1789 10.0001L15.3039 14.1251L14.1256 15.3034L10.0006 11.1784L5.8756 15.3034L4.69727 14.1251L8.82227 10.0001L4.69727 5.87511L5.8756 4.69678L10.0006 8.82178Z"
+          ></path>
+        </svg>
+      </button>
     </div>
-    <slot name="aside"></slot>
-    <button id="close" @click="$emit('close-modal')">
-      <svg viewBox="0 0 20 20">
-        <path
-          d="M10.0006 8.82178L14.1256 4.69678L15.3039 5.87511L11.1789 10.0001L15.3039 14.1251L14.1256 15.3034L10.0006 11.1784L5.8756 15.3034L4.69727 14.1251L8.82227 10.0001L4.69727 5.87511L5.8756 4.69678L10.0006 8.82178Z"
-        ></path>
-      </svg>
-    </button>
   </div>
 </template>
 
 <script>
 export default {
   name: "VModal",
-  props: {
-    isOpen: {
-      type: Boolean,
-      default: true,
-    },
+
+  mounted() {
+    this.$el.focus();
   },
-
-  data: () => ({}),
-
-  methods: {},
 };
 </script>
 
 <style>
 .modal {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.modal__window {
+  position: relative;
   max-width: 800px;
   width: 100%;
   padding: 24px 40px;
@@ -46,20 +62,9 @@ export default {
   background-position: center top;
   background-size: cover;
 
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.3s ease;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.modal.active {
-  transform: translate(-50%, -50%) scale(1);
-  transition: transform 0.3s ease;
 }
 
 #close {

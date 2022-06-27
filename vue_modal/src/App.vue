@@ -30,7 +30,7 @@
     </div>
 
     <!-- modals -->
-    <v-modal :isOpen="isOpenModalDazzle" @close-modal="closeModal">
+    <v-modal v-if="isOpenModalDazzle" @close-modal="closeModal">
       <template v-slot:header>
         <div class="modal__header">
           <div class="modal__stat">
@@ -87,7 +87,7 @@
         <img src="@/assets/img/dazzle.png" class="modal__img" alt="dazzle" />
       </template>
     </v-modal>
-    <v-modal :isOpen="isOpenModalAxe" @close-modal="closeModal">
+    <v-modal v-if="isOpenModalAxe" @close-modal="closeModal">
       <template v-slot:header>
         <div class="modal__header">
           <div class="modal__stat">
@@ -145,7 +145,7 @@
         <img src="@/assets/img/axe.png" class="modal__img" alt="axe" />
       </template>
     </v-modal>
-    <v-modal :isOpen="isOpenModalSniper" @close-modal="closeModal">
+    <v-modal v-if="isOpenModalSniper" @close-modal="closeModal">
       <template v-slot:header>
         <div class="modal__header">
           <div class="modal__stat">
@@ -199,7 +199,7 @@
         <img src="@/assets/img/sniper.png" class="modal__img" alt="sniper" />
       </template>
     </v-modal>
-    <v-modal :isOpen="isOpenModalRoshan" @close-modal="closeModal">
+    <v-modal v-if="isOpenModalRoshan" @close-modal="closeModal">
       <template v-slot:header>
         <div class="modal__header">
           <h1 class="modal__title">roshan</h1>
@@ -320,15 +320,6 @@ export default {
       this.isOpenModalSniper = false;
       this.isOpenModalRoshan = false;
     },
-
-    // clickOutsideModal() {
-    //   window.addEventListener("click", (el) => {
-    //     if (!el.target.closest(".modal.active")) {
-    //       this.isOpenModalDazzle = false;
-    //       console.log("true");
-    //     }
-    //   });
-    // },
   },
 };
 </script>
@@ -370,6 +361,7 @@ ul li {
 }
 
 .container {
+  position: relative;
   width: 100%;
   padding-top: 150px;
 }
