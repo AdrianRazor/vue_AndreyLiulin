@@ -5,25 +5,43 @@
       <app-field
         v-for="(field, i) in info"
         :key="i"
-        :value="field.value"
-        :pattern="field.pattern"
+        :placeholder="field.placeholder"
         :valid="field.valid"
         :activated="field.activated"
         @on-input="handleInput($event, i)"
       ></app-field>
-      <button class="form__btn-send" :disabled="!formReady">Send Data</button>
+      <button
+        class="form__btn-send"
+        type="button"
+        :disabled="!formReady"
+        @click="openModal"
+      >
+        Send Data
+      </button>
     </form>
+
+    <app-modal
+      v-if="isModalOpen"
+      @close-modal="closeModal"
+      :items="info"
+      :name="info.name"
+      :value="info.value"
+    >
+    </app-modal>
   </div>
 </template>
-
+<!-- v-if="isModalOpen" -->
 <script>
 import AppField from "./components/AppField.vue";
 import AppProgress from "./components/AppProgress.vue";
+import AppModal from "./components/AppModal.vue";
 
 export default {
+  name: "App",
   components: {
     AppField,
     AppProgress,
+    AppModal,
   },
   created() {
     return this.info.forEach((element) => {
@@ -37,29 +55,36 @@ export default {
       {
         name: "Name",
         value: "",
+        placeholder: "name",
         pattern: /^[a-zA-Z ]{2,30}$/,
       },
       {
         name: "Phone",
         value: "",
+        placeholder: "phone",
         pattern: /^[0-9]{7,14}$/,
       },
       {
         name: "Email",
         value: "",
+        placeholder: "mail",
         pattern: /.+/,
       },
       {
         name: "Additional info 1",
         value: "",
+        placeholder: "add1",
         pattern: /.+/,
       },
       {
         name: "Additional info 2",
         value: "",
+        placeholder: "add2",
         pattern: /.+/,
       },
     ],
+    name: "adsg",
+    isModalOpen: false,
   }),
 
   computed: {
@@ -82,6 +107,14 @@ export default {
       field.value = value;
       field.activated = true;
       field.valid = field.pattern.test(value);
+    },
+
+    openModal() {
+      this.isModalOpen = true;
+    },
+
+    closeModal() {
+      this.isModalOpen = false;
     },
   },
 };
