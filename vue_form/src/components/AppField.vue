@@ -3,10 +3,31 @@
     <input
       type="text"
       class="form__input"
+      :placeholder="placeholder"
       @input="$emit('on-input', $event.target.value)"
       required
     />
-    <div class="form__icon" v-if="activated" :class="{ valid: valid }"></div>
+    <transition
+      name="roll"
+      v-if="activated"
+      mode="out-in"
+      appear
+      appear-from-class="fade-enter-from"
+      appear-to-class="fade-enter-to"
+    >
+      <img
+        class="form__icon"
+        src="../assets/img/valid.svg"
+        alt="valid"
+        v-if="valid"
+      />
+      <img
+        class="form__icon"
+        src="../assets/img/invalid.svg"
+        alt="invalid"
+        v-else
+      />
+    </transition>
   </div>
 </template>
 
@@ -21,6 +42,10 @@ export default {
     activated: {
       type: Boolean,
       default: false,
+    },
+    placeholder: {
+      type: String,
+      default: " ",
     },
   },
 };
@@ -54,16 +79,36 @@ export default {
 }
 
 .form__icon {
-  background-image: url(../assets/img/invalid.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
   width: 35px;
   height: 35px;
   margin-left: 15px;
 }
 
-.form__icon.valid {
-  background-image: url(../assets/img/valid.svg);
+/* Animation */
+.fade-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+.fade-enter-to {
+  opacity: 1;
+  transform: translateX(0px);
+  transition: all 0.2s ease;
+}
+
+.roll-leave-from {
+  transform: scaleX(1);
+  transition: all 0.1s ease;
+}
+.roll-leave-to {
+  transform: scaleX(0);
+  transition: all 0.1s ease;
+}
+.roll-enter-from {
+  transform: scaleX(0);
+  transition: all 0.1s ease;
+}
+.roll-enter-to {
+  transform: scaleX(1);
+  transition: all 0.1s ease;
 }
 </style>
