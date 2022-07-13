@@ -66,10 +66,15 @@ export default {
   overflow: hidden;
   box-sizing: content-box;
   box-shadow: 0 0 16px rgba(10, 10, 10, 0.1);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
 }
 
 .select.open {
-  max-height: 100%;
+  max-height: fit-content;
 }
 
 .select__header {

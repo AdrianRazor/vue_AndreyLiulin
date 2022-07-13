@@ -28,6 +28,7 @@
         ></v-dropdown>
       </div>
     </div>
+    <the-multiselect-container></the-multiselect-container>
 
     <!-- modals -->
     <v-modal v-if="isOpenModalDazzle" @close-modal="closeModal">
@@ -249,11 +250,14 @@
 import VDropdown from "@/components/VDropdown.vue";
 import VModal from "@/components/VModal.vue";
 
+import TheMultiselectContainer from "@/components/TheMultiselectContainer.vue";
+
 export default {
   name: "App",
   components: {
     VDropdown,
     VModal,
+    TheMultiselectContainer,
   },
 
   data: () => ({
@@ -269,7 +273,6 @@ export default {
       currentValue: "Choose your position",
       filteredValues: [],
     },
-
     heroes: {
       values: [
         "Axe",
@@ -284,7 +287,6 @@ export default {
       currentValue: "Pick your hero",
       filteredValues: [],
     },
-
     isOpenModalDazzle: false,
     isOpenModalAxe: false,
     isOpenModalSniper: false,
@@ -297,9 +299,6 @@ export default {
   },
 
   methods: {
-    // Можно ли сделать эти методы одним уникальным методом?
-    // Например, принимать в функции слова типа "position", "heroes" и т.д?
-
     changePosition(event) {
       this.position.currentValue = event.target.textContent;
       this.position.filteredValues = this.position.values.filter(
@@ -324,94 +323,4 @@ export default {
 };
 </script>
 
-<style>
-@font-face {
-  font-family: "Poppins";
-  src: url("@/assets/fonts/Poppins-Medium.woff2") format("woff2"),
-    url("@/assets/fonts/Poppins-Medium.woff") format("woff"),
-    url("@/assets/fonts/Poppins-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-* {
-  padding: 0;
-  margin: 0;
-  border: 0;
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-  background-color: #333;
-  background-image: url(assets/img/bg.jpg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  font-family: "Poppins", sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 140%;
-}
-
-ul li {
-  list-style: none;
-}
-
-.container {
-  position: relative;
-  width: 100%;
-  padding-top: 150px;
-}
-
-.dropdowns {
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-  gap: 0 40px;
-}
-
-.wrapper {
-  width: 300px;
-}
-
-.modals {
-  display: flex;
-  justify-content: center;
-  gap: 0 40px;
-}
-
-.btn {
-  padding: 8px 16px;
-  background-color: transparent;
-  border-radius: 6px;
-  border: 2px solid #fff;
-  cursor: pointer;
-
-  font-family: "Poppins", sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  color: #fff;
-  text-transform: uppercase;
-
-  transition: all 0.15s ease;
-}
-
-.btn-str:hover {
-  background-color: #ec3d06;
-  transition: all 0.15s ease;
-}
-
-.btn-int:hover {
-  background-color: #02cbde;
-  transition: all 0.15s ease;
-}
-
-.btn-agi:hover {
-  background-color: #26e030;
-  transition: all 0.15s ease;
-}
-</style>
+<style></style>
